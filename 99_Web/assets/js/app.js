@@ -1,5 +1,6 @@
 (function () {
   const chapters = window.courseData || [];
+  const beginnerNotes = window.beginnerNotesData || [];
   const glossary = window.glossaryData || [];
   const quizzes = window.quizData || [];
   const state = {
@@ -46,6 +47,10 @@
     return chapters.findIndex((chapter) => chapter.id === state.currentChapter);
   }
 
+  function beginnerNoteByChapter(id) {
+    return beginnerNotes.find((note) => note.chapterId === id);
+  }
+
   function setChapter(id) {
     state.currentChapter = id;
     localStorage.setItem("sap-co-current-chapter", id);
@@ -88,6 +93,7 @@
 
   function renderLesson(chapter) {
     el.currentChapterTitle.textContent = `${chapter.id}. ${chapter.title}`;
+    const beginnerNote = beginnerNoteByChapter(chapter.id);
     const sectionHtml = chapter.sections.map((section, index) => {
       const id = `section-${chapter.id}-${index}`;
       return `
@@ -138,6 +144,25 @@
       </nav>
     `;
 
+    const beginnerNoteHtml = beginnerNote ? `
+      <section class="beginner-note-panel">
+        <p class="eyebrow">初学者補足</p>
+        <h3>${escapeHtml(beginnerNote.title)}</h3>
+        <p>${escapeHtml(beginnerNote.intro)}</p>
+        <div class="beginner-note-grid">
+          ${beginnerNote.points.map((point) => `
+            <article class="beginner-note-card">
+              <strong>${escapeHtml(point.term)}</strong>
+              <span>${escapeHtml(point.explanation)}</span>
+            </article>
+          `).join("")}
+        </div>
+        <ul>
+          ${beginnerNote.pitfalls.map((pitfall) => `<li>${escapeHtml(pitfall)}</li>`).join("")}
+        </ul>
+      </section>
+    ` : "";
+
     el.lessonPanel.innerHTML = `
       <header class="lesson-hero">
         <div>
@@ -148,6 +173,7 @@
       </header>
 
       ${tocHtml}
+      ${beginnerNoteHtml}
 
       <details class="overview-details">
         <summary>この章の学習目標と試験観点</summary>
@@ -287,7 +313,9 @@
     }
 
     const chapterHits = chapters.filter((chapter) => {
-      const content = [chapter.title, chapter.subtitle, chapter.summary, ...chapter.objectives, ...chapter.examFocus, ...chapter.keyTakeaways, ...chapter.sections.flatMap((section) => [section.title, ...section.body, ...section.bullets, section.example, section.examTip])].join(" ");
+      const beginnerNote = beginnerNoteByChapter(chapter.id);
+      const beginnerNoteContent = beginnerNote ? [beginnerNote.title, beginnerNote.intro, ...beginnerNote.points.flatMap((point) => [point.term, point.explanation]), ...beginnerNote.pitfalls] : [];
+      const content = [chapter.title, chapter.subtitle, chapter.summary, ...chapter.objectives, ...chapter.examFocus, ...chapter.keyTakeaways, ...beginnerNoteContent, ...chapter.sections.flatMap((section) => [section.title, ...section.body, ...section.bullets, section.example, section.examTip])].join(" ");
       return content.toLowerCase().includes(query);
     });
 

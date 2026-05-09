@@ -1,0 +1,16 @@
+(function () {
+  const extraQuizData = [
+    { id: "review-01-01", chapterId: "01", type: "単一選択", question: "HANAがOLTPとOLAPの分断を減らす意味として最も適切なものはどれですか。", options: ["取引入力と分析を同じデータ基盤で扱いやすくする", "Company Codeを不要にする", "FioriをすべてSAP GUIへ戻す", "予算超過を常に無視する"], answers: [0], explanation: "HANAは取引と分析を同じデータで扱うHTAPの考え方を支え、転記直後の分析を可能にします。" },
+    { id: "review-02-01", chapterId: "02", type: "単一選択", question: "複数Company Codeを一つのControlling Areaに割り当てる際に重要な条件はどれですか。", options: ["同じOperational Chart of Accountsを使う", "すべてのOrderをStatisticalにする", "Cost Center標準階層を削除する", "Fioriレポートを無効化する"], answers: [0], explanation: "内部配賦やレポートを同じ会計ルールで扱うため、運用勘定コード表の一致が重要です。" },
+    { id: "review-03-01", chapterId: "03", type: "単一選択", question: "Line item repostingの特徴として正しいものはどれですか。", options: ["元FI文書への参照を保持する", "Commitmentだけを繰り越す", "Order Typeを自動作成する", "ACDOCPのCategoryを変更する"], answers: [0], explanation: "Line item repostingは元FI文書との追跡性を残してCO明細を修正できます。" },
+    { id: "review-04-01", chapterId: "04", type: "単一選択", question: "Indirect Activity Allocationの説明として最も近いものはどれですか。", options: ["受信側の基準値やルールから活動数量を自動的に求めて配賦する", "常に元FI文書を削除する", "予算を翌年へ繰り越す", "OrderをClosedにする"], answers: [0], explanation: "間接活動配賦は直接入力された数量だけでなく、基準値から活動量を計算して実績配賦します。" },
+    { id: "review-05-01", chapterId: "05", type: "複数選択", question: "Internal Orderの用途分類として適切なものを選んでください。", options: ["Overhead Order", "Investment Order", "Accrual Order", "Fiori Theme Order"], answers: [0, 1, 2], explanation: "Overhead、Investment、Accrual、Revenue-bearingなどがInternal Orderの代表的な用途です。" },
+    { id: "review-06-01", chapterId: "06", type: "単一選択", question: "Commitment Carryforwardの説明として正しいものはどれですか。", options: ["Open commitmentを翌年度第1期間へ繰り越す", "Actual costを削除する", "Statistical OrderをReal Orderに変換する", "ACDOCAをACDOCPへコピーする"], answers: [0], explanation: "年度末に未消化のCommitmentを翌年度へ持ち越し、将来費用の予約として管理します。" },
+    { id: "review-07-01", chapterId: "07", type: "単一選択", question: "Equivalence Numberを使う目的はどれですか。", options: ["受信先ごとの重みでSettlement比率を決める", "FI文書番号を採番する", "Cost Center Categoryを作成する", "POを自動承認する"], answers: [0], explanation: "Equivalence NumberはSettlement Ruleで受信先ごとの比率を重みとして指定する方法です。" },
+    { id: "review-08-01", chapterId: "08", type: "単一選択", question: "Retractionの説明として正しいものはどれですか。", options: ["S/4HANAの計画データを旧COテーブルへ戻す処理", "ActualをCommitmentへ変換する処理", "予算超過を止める処理", "Order StatusをReleasedへ変える処理"], answers: [0], explanation: "ACDOCPの計画データを旧COテーブルへ戻し、従来トランザクションや処理と連携する場合に使います。" },
+    { id: "review-09-01", chapterId: "09", type: "単一選択", question: "Cost Center BudgetのCSV ImportでPosting period 1が推奨される理由として近いものはどれですか。", options: ["年次予算のレポート表示ずれを避けるため", "予算を月次リリースに変えるため", "CommitmentをActualへ変換するため", "Order Settlementを自動化するため"], answers: [0], explanation: "Cost Center Budgetは年次予算ですがCSVには期間が必要で、period 1を使うと年度内レポートで予算が見えやすくなります。" },
+    { id: "review-10-01", chapterId: "10", type: "単一選択", question: "New Commitment ManagementでPO保存時に作成されるものとして最も適切なものはどれですか。", options: ["Extension Ledger上の予測仕訳", "Closed済みInternal Order", "Cost Center標準階層", "Budget Return文書だけ"], answers: [0], explanation: "PO保存時に将来費用を表すPredictive Accounting documentがExtension Ledgerへ記録されます。" }
+  ];
+
+  window.quizData = (window.quizData || []).concat(extraQuizData);
+})();
