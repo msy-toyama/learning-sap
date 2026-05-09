@@ -198,12 +198,54 @@ button {
 }
 
 .topbar,
+.content-tabs,
 .search-results,
 .course-layout,
 .quiz-section,
 .glossary-section {
   width: min(100%, 1180px);
   margin-inline: auto;
+}
+
+.content-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--line);
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.tab-btn {
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 800;
+  margin-bottom: -2px;
+}
+
+.tab-btn:hover {
+  color: var(--accent-strong);
+}
+
+.tab-btn.is-active {
+  color: var(--accent-strong);
+  border-bottom-color: var(--accent-strong);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.is-active {
+  display: block;
+}
+
+.course-layout.tab-content.is-active {
+  display: grid;
 }
 
 .topbar,
@@ -631,7 +673,7 @@ tr:last-child td {
 
 .quiz-section,
 .glossary-section {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .quiz-count {
@@ -836,4 +878,10 @@ tr:last-child td {
   .primary-button {
     flex: 1;
   }
+}
+.course-layout.tab-content {
+  display: none;
+}
+.course-layout.tab-content.is-active {
+  display: grid;
 }

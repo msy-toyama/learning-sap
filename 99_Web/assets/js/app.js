@@ -16,7 +16,10 @@
     glossaryPreview: document.getElementById("glossaryPreview"),
     glossaryGrid: document.getElementById("glossaryGrid"),
     glossaryFilter: document.getElementById("glossaryFilter"),
-    quizSection: document.getElementById("quizSection"),
+    quizSection: document.getElementById("tab-quiz"),
+      quizTabCount: document.getElementById("quizTabCount"),
+      tabBtns: document.querySelectorAll(".tab-btn"),
+      tabContents: document.querySelectorAll(".tab-content"),
     progressBar: document.getElementById("progressBar"),
     progressText: document.getElementById("progressText"),
     search: document.getElementById("globalSearch"),
@@ -47,6 +50,7 @@
     state.currentChapter = id;
     localStorage.setItem("sap-co-current-chapter", id);
     render();
+    if (typeof switchTab === "function") switchTab("lesson");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -203,6 +207,7 @@
 
   function renderQuiz(chapter) {
     const items = quizzes.filter((quiz) => quiz.chapterId === chapter.id);
+    if (el.quizTabCount) el.quizTabCount.textContent = items.length;
     el.quizSection.innerHTML = `
       <div class="section-heading-row">
         <div>
@@ -344,8 +349,24 @@
     el.glossaryFilter.value = "all";
     renderGlossary();
     renderSearchResults();
-    document.getElementById("glossarySection").scrollIntoView({ behavior: "smooth" });
+    if (typeof switchTab === "function") switchTab("glossary");
+    document.getElementById("tab-glossary").scrollIntoView({ behavior: "smooth" });
   });
+
+  function switchTab(tabId) {
+    el.tabBtns.forEach((btn) => {
+      btn.classList.toggle("is-active", btn.dataset.tab === tabId);
+    });
+    el.tabContents.forEach((content) => {
+      content.classList.toggle("is-active", content.id === `tab-${tabId}`);
+    });
+  }
+
+  if(el.tabBtns) {
+    el.tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    });
+  }
 
   render();
 })();
