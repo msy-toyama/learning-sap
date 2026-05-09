@@ -59,23 +59,22 @@
   }
 
   function renderChapterNav() {
-    el.chapterNav.innerHTML = chapters.map((chapter) => {
-      const isActive = chapter.id === state.currentChapter;
-      const done = state.completed.has(chapter.id);
-      return `
-        <button class="chapter-link ${isActive ? "is-active" : ""}" type="button" data-chapter="${chapter.id}">
-          <span class="chapter-number">${chapter.id}</span>
-          <span>
-            <strong>${escapeHtml(chapter.title)}</strong>
-            <small>${escapeHtml(chapter.subtitle)}</small>
-          </span>
-          <span class="chapter-status ${done ? "is-done" : ""}" aria-label="${done ? "読了" : "未読"}">${done ? "✓" : ""}</span>
-        </button>
-      `;
-    }).join("");
+    el.chapterNav.innerHTML = `
+      <div class="select-wrapper">
+        <label for="chapterSelect" class="eyebrow" style="display:block; margin-bottom:8px;">章を選択</label>
+        <select id="chapterSelect" class="chapter-select" aria-label="章を選択">
+          ${chapters.map((chapter) => {
+            const isActive = chapter.id === state.currentChapter;
+            const done = state.completed.has(chapter.id);
+            const doneMark = done ? " ✓" : "";
+            return `<option value="${chapter.id}" ${isActive ? "selected" : ""}>${chapter.id}. ${escapeHtml(chapter.title)}${doneMark}</option>`;
+          }).join("")}
+        </select>
+      </div>
+    `;
 
-    el.chapterNav.querySelectorAll("button[data-chapter]").forEach((button) => {
-      button.addEventListener("click", () => setChapter(button.dataset.chapter));
+    el.chapterNav.querySelector("#chapterSelect").addEventListener("change", (e) => {
+      setChapter(e.target.value);
     });
   }
 
@@ -128,6 +127,17 @@
       </details>
     `).join("");
 
+    const tocHtml = `
+      <nav class="in-page-toc">
+        <h3>章内目次</h3>
+        <ol>
+          ${chapter.sections.map((section, index) => `
+            <li><a href="#section-${chapter.id}-${index}">${escapeHtml(section.title)}</a></li>
+          `).join("")}
+        </ol>
+      </nav>
+    `;
+
     el.lessonPanel.innerHTML = `
       <header class="lesson-hero">
         <div>
@@ -136,6 +146,8 @@
           <p>${escapeHtml(chapter.summary)}</p>
         </div>
       </header>
+
+      ${tocHtml}
 
       <details class="overview-details">
         <summary>この章の学習目標と試験観点</summary>
@@ -165,9 +177,7 @@
       </section>
     `;
 
-    el.sectionToc.innerHTML = chapter.sections.map((section, index) => `
-      <a href="#section-${chapter.id}-${index}">${escapeHtml(section.title)}</a>
-    `).join("");
+    
   }
 
   function renderGlossaryPreview(chapter) {
